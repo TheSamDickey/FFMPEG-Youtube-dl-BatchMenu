@@ -22,3 +22,7 @@ Ugh, what's that command again?!  It's painful to look up ffmpeg and youtube-dl 
 # Note:
 
 Make sure you have both ffmpeg.exe and youtube-dl.exe in the same directory as the batch file.
+
+# Usage:
+
+For (most) options that require a file name, you can enter `all` and it will do all files of that file type in the same direcory.
