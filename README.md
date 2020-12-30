@@ -1,19 +1,24 @@
-# FFMPEG-Youtube-dl-BatchMenu
+# FFMPEG-Youtube-dl-Batch Menu
 Ugh, what's that command again?!  It's painful to look up ffmpeg and youtube-dl commands, so this tool does all the common stuff for you!
 
-#Menu
-1 - Download Video
+# List of features:
 
-2 - Download Playlist
+- Download Video
 
-3 - Split Video into Images
+- Download Playlist
 
-4 - Webm to MP4
+- Split Video into Images
 
-5 - Split MKV
+- Webm to MP4
 
-6 - MKV to MP4
+- Split MKV
 
-7 - Concat mkv files
+- MKV to MP4
 
-8 - Images to Video
+- Concat mkv files
+
+- Images to Video
+
+# Note:
+
+Make sure you have both ffmpeg.exe and youtube-dl.exe in the same directory as the batch file.
