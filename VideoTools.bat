@@ -6,13 +6,13 @@ cls
 echo Menu
 echo ----------------
 echo 1 - Download Video
-echo 2 - Download Playlist
-echo 3 - Split Video into Images
+echo 2 - Download YT Playlist
+echo 3 - MP4 + M4A
 echo 4 - Webm to MP4
-echo 5 - Split MKV
-echo 6 - MKV to MP4
+echo 5 - MKV to MP4
+echo 6 - Split MKV
 echo 7 - Concat mkv
-echo 8 - Images to Video
+echo 8 - 
 echo 9 - Next Menu
 echo ----------------
 echo. 
@@ -26,6 +26,35 @@ if %input%==5 CALL:5
 if %input%==6 CALL:6
 if %input%==7 CALL:7
 if %input%==8 CALL:8
+if %input%==9 exit
+pause
+exit
+
+:Menu2
+cls
+echo Menu
+echo ----------------
+echo 1 - Split Video into Images
+echo 2 - Images to Video
+echo 3 - 
+echo 4 - 
+echo 5 -
+echo 6 -
+echo 7 -
+echo 8 - Previous Menu
+echo 9 -
+echo ----------------
+echo. 
+set /p input="Select an option: "
+cls
+if %input%==1 CALL:2-1
+if %input%==2 CALL:2-2
+if %input%==3 exit
+if %input%==4 exit
+if %input%==5 exit
+if %input%==6 exit
+if %input%==7 exit
+if %input%==8 exit
 if %input%==9 exit
 pause
 exit
@@ -46,33 +75,54 @@ set /p url="Set target URL: "
 pause
 CALL:Menu
 
-
 :3
-set /p url="Set target file name: "
-set /p quality="Set quality (1-5): "
-.\ffmpeg -i "%url%" -q:v 3 output/output_%%03d.jpg
-echo Complete!
+echo Put MP4 and M4A into a folder called input
+pause
+cd input
+ren *.mp4 input.mp4
+ren *.m4a input.m4a
+cd ../
+ffmpeg -i input/input.mp4 -i input/input.M4A -c:v copy -c:a aac output.mp4
+move output.mp4 output/output.mp4
 pause
 CALL:Menu
 
 
 :4
-set /p url="Set target file: "
+set /p url="Enter filename (or do all): "
 if %url%==all (CALL:4all) else (CALL:4target)
 
 :4target
-.\ffmpeg -i "%url%.mkv" -c copy -c:a aac -movflags +faststart %url%.mp4
-.\ffmpeg -i %url% video.mp4
+.\ffmpeg -i "%url%.webm" -max_muxing_queue_size 23387080 %url%.mp4
+del "%url%.webm%
 pause
 CALL:Menu
 
 :4all
-FOR /F "tokens=*" %%G IN ('dir /b *.mkv') DO ffmpeg -i "%%G" -c copy -c:a aac -movflags +faststart "%%~nG.mp4"
+FOR /F "tokens=*" %%G IN ('dir /b *.webm') DO ffmpeg -i "%%G" -c:v copy "%%~nG.mp4"
+FOR /F "tokens=*" %%G IN ('dir /b *.webm') DO del "%%G"
 pause
 CALL:Menu
 
 
 :5
+set /p url="Enter filename (or do all): "
+if %url%==all (CALL:5all) else (CALL:5target)
+
+:5target
+.\ffmpeg -i "%url%.mkv" -c copy -c:a aac -movflags +faststart %url%.mp4
+del "%url%.mkv%
+pause
+CALL:Menu
+
+:5all
+FOR /F "tokens=*" %%G IN ('dir /b *.mkv') DO ffmpeg -i "%%G" -c copy -c:a aac -movflags +faststart "%%~nG.mp4"
+FOR /F "tokens=*" %%G IN ('dir /b *.mkv') DO del "%%G"
+pause
+CALL:Menu
+
+
+:6
 set /p url="Set target file: "
 set /p splitTime="Enter time to split:" 
 echo Stripping subtitles...
@@ -84,22 +134,6 @@ ffmpeg -i nosubs.mkv -ss %splitTime% -c copy part2.mkv
 echo removing nosubs...
 del nosubs.mkv
 echo done!
-pause
-CALL:Menu
-
-
-:6
-set /p url="Set target file: "
-if %url%==all (CALL:6all) else (CALL:6target)
-
-:6target
-.\ffmpeg -i "%url%.mkv" -c copy -c:a aac -movflags +faststart %url%.mp4
-.\ffmpeg -i %url% video.mp4
-pause
-CALL:Menu
-
-:6all
-FOR /F "tokens=*" %%G IN ('dir /b *.mkv') DO ffmpeg -i "%%G" -c copy -c:a aac -movflags +faststart "%%~nG.mp4"
 pause
 CALL:Menu
 
@@ -125,7 +159,17 @@ echo .
 pause
 CALL:7
 
-:8
+
+:2-1
+set /p url="Set target file name: "
+set /p quality="Set quality (1-5): "
+.\ffmpeg -i "%url%" -q:v 3 output/output_%%03d.jpg
+echo Complete!
+pause
+CALL:Menu
+
+
+:2-2
 echo After placing all images into the input folder,
 pause
 .\ffmpeg -i input/img%%03d.png -c:v libx264 -vf fps=24 -pix_fmt yuv420p outPut.mp4
