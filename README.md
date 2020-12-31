@@ -4,6 +4,8 @@ Ugh, what's that command again?!  It's painful to look up ffmpeg and youtube-dl 
 # List of features:
 
 - Download Video
+    - Choose to either download a single file or download seperate video + audio files
+    - When choosing seperate video + audio files, it will combine them into one mp4 with the chosen video and audio tracks
 
 - Download Playlist
 
