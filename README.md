@@ -1,5 +1,6 @@
 # FFMPEG-Youtube-dl-Batch Menu
 Ugh, what's that command again?!  It's painful to look up ffmpeg and youtube-dl commands, so this tool does all the common stuff for you!
+(This is a personal project, and not everything works.  This is just something I dabble with when I'm bored.)
 
 # List of features:
 
